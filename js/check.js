@@ -397,7 +397,7 @@
         }
 
         pageTitle.textContent = targetList.name;
-        document.title = `${targetList.name} | 忘れ物チェッカー`;
+        document.title = `${targetList.name} | 忘れ物チェック`;
 
         renderManualItems();
         guideText.textContent = getInitialGuideText();
