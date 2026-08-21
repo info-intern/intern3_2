@@ -191,7 +191,7 @@
             const list = Storage.findList(listId);
             if (list) {
                 pageTitle.textContent = 'リストを編集する';
-                document.title = 'リストを編集する | 忘れ物チェック';
+                document.title = 'リストを編集する | 忘れ物チェッカー';
                 listNameInput.value = list.name;
                 list.itemCodes.forEach((code) => selectedCodes.add(code));
             } else {

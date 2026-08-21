@@ -366,7 +366,7 @@
         }
 
         pageTitle.textContent = targetList.name;
-        document.title = `${targetList.name} | 忘れ物チェック`;
+        document.title = `${targetList.name} | 忘れ物チェッカー`;
 
         renderManualItems();
 
