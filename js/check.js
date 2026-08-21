@@ -144,13 +144,15 @@
     };
 
     /**
-     * 「リスト外の物」のブロックを作る。入れ間違いに気づけるようにする。
+     * 「リスト外の物」のブロックを作る。
+     * リストに無い物が入っていても問題ではないため、参考情報として控えめに知らせる。
      * @param {Array<Object>} extra リストに無い持ち物
      * @returns {HTMLElement} 生成した要素
      */
     const createExtraBlock = (extra) => {
         const block = UI.createElement('section', 'result-block result-extra');
-        block.appendChild(UI.createElement('h2', 'result-heading', `リストにない物が${extra.length}個あります`));
+        block.appendChild(UI.createElement('h2', 'result-heading', `リストにない物も${extra.length}個入っています`));
+        block.appendChild(UI.createElement('p', 'result-caption', '持っていく分には問題ありません。念のため確認してください。'));
 
         const list = document.createElement('ul');
         extra.forEach((entry) => {

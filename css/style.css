@@ -495,17 +495,23 @@ body {
     font-size: 15px;
 }
 
-/* リスト外の物：控えめに表示 */
+/* リスト外の物：問題ではないので、警告色を使わず控えめに知らせるだけ */
 .result-extra {
-    background-color: var(--color-warn-bg);
-    border: 1px solid #f0d9a8;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
     padding: 12px 16px;
 }
 
 .result-extra .result-heading {
     font-size: 15px;
     font-weight: 600;
-    color: var(--color-warn);
+    color: var(--color-text-sub);
+    margin: 0 0 2px;
+}
+
+.result-extra .result-caption {
+    font-size: 13px;
+    color: var(--color-text-sub);
     margin: 0 0 6px;
 }
 
@@ -518,7 +524,7 @@ body {
 .result-extra li {
     font-size: 14px;
     padding: 4px 0;
-    color: var(--color-warn);
+    color: var(--color-text-sub);
 }
 
 /* ===== トースト通知 ===== */
