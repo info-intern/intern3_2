@@ -69,7 +69,7 @@
             }
         });
 
-        // リストに無いコードを読み取った場合は「入れ間違い」として扱う
+        // リストに無いコードを読み取った場合は、問題としてではなく参考情報として扱う
         const listCodes = new Set(targetList.itemCodes);
         const extra = Array.from(scannedCodes)
             .filter((code) => !listCodes.has(code))
@@ -366,7 +366,7 @@
         }
 
         pageTitle.textContent = targetList.name;
-        document.title = `${targetList.name} | 就活 忘れ物チェック`;
+        document.title = `${targetList.name} | 忘れ物チェック`;
 
         renderManualItems();
 

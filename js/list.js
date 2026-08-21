@@ -38,35 +38,56 @@
             return;
         }
 
-        const container = UI.createElement('ul', 'card-list');
+        // カテゴリごとにまとめる。JSONに書かれた並び順をそのまま保つ
+        const grouped = new Map();
         presets.forEach((preset) => {
-            const listItem = document.createElement('li');
-            const row = UI.createElement('button', 'row');
-            row.type = 'button';
-
-            const body = UI.createElement('span', 'row-body');
-            body.appendChild(UI.createElement('span', 'row-title', preset.name));
-            body.appendChild(UI.createElement('span', 'row-note', `持ち物 ${preset.itemCodes.length}個を選択します`));
-            row.appendChild(body);
-            row.appendChild(UI.createElement('span', 'row-arrow', '＋'));
-
-            row.addEventListener('click', () => {
-                // 削除済みの持ち物がリストに混ざらないよう、登録されているコードだけを選ぶ
-                preset.itemCodes
-                    .filter((code) => Storage.findItem(code))
-                    .forEach((code) => selectedCodes.add(code));
-                if (listNameInput.value.trim() === '') {
-                    listNameInput.value = preset.name;
-                }
-                renderItems();
-                setError(itemSelectError, '');
-                UI.showToast(`「${preset.name}」の持ち物を選びました`);
-            });
-
-            listItem.appendChild(row);
-            container.appendChild(listItem);
+            const category = preset.category || 'その他';
+            if (!grouped.has(category)) {
+                grouped.set(category, []);
+            }
+            grouped.get(category).push(preset);
         });
-        presetArea.appendChild(container);
+
+        grouped.forEach((categoryPresets, category) => {
+            presetArea.appendChild(UI.createElement('h3', 'preset-category', category));
+
+            const container = UI.createElement('ul', 'card-list');
+            categoryPresets.forEach((preset) => container.appendChild(createPresetRow(preset)));
+            presetArea.appendChild(container);
+        });
+    };
+
+    /**
+     * ひな型1件を表す行を作る。押すと、その持ち物にチェックを付ける。
+     * @param {Object} preset 表示するひな型
+     * @returns {HTMLLIElement} 生成した行要素
+     */
+    const createPresetRow = (preset) => {
+        const listItem = document.createElement('li');
+        const row = UI.createElement('button', 'row');
+        row.type = 'button';
+
+        const body = UI.createElement('span', 'row-body');
+        body.appendChild(UI.createElement('span', 'row-title', preset.name));
+        body.appendChild(UI.createElement('span', 'row-note', `持ち物 ${preset.itemCodes.length}個を選択します`));
+        row.appendChild(body);
+        row.appendChild(UI.createElement('span', 'row-arrow', '＋'));
+
+        row.addEventListener('click', () => {
+            // 削除済みの持ち物がリストに混ざらないよう、登録されているコードだけを選ぶ
+            preset.itemCodes
+                .filter((code) => Storage.findItem(code))
+                .forEach((code) => selectedCodes.add(code));
+            if (listNameInput.value.trim() === '') {
+                listNameInput.value = preset.name;
+            }
+            renderItems();
+            setError(itemSelectError, '');
+            UI.showToast(`「${preset.name}」の持ち物を選びました`);
+        });
+
+        listItem.appendChild(row);
+        return listItem;
     };
 
     /**
@@ -164,7 +185,7 @@
             const list = Storage.findList(listId);
             if (list) {
                 pageTitle.textContent = 'リストを編集する';
-                document.title = 'リストを編集する | 就活 忘れ物チェック';
+                document.title = 'リストを編集する | 忘れ物チェック';
                 listNameInput.value = list.name;
                 list.itemCodes.forEach((code) => selectedCodes.add(code));
             } else {

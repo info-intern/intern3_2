@@ -7,6 +7,7 @@ const Storage = (() => {
     const KEY_PRESETS = 'wasuremono.presets';
     const KEY_LISTS = 'wasuremono.lists';
     const KEY_HISTORY = 'wasuremono.history';
+    const KEY_VERSION = 'wasuremono.dataVersion';
     const INITIAL_DATA_URL = 'data/items.json';
 
     /**
@@ -44,43 +45,65 @@ const Storage = (() => {
     const normalizeCode = (code) => String(code === undefined || code === null ? '' : code).trim();
 
     /**
-     * 初期データを読み込み、まだ保存されていなければ LocalStorage へコピーする。
+     * 初期データの持ち物を、保存する形に整える。
+     * @param {Array<Object>} rawItems JSONから読み込んだ持ち物
+     * @returns {Array<Object>} 整えた持ち物の配列
+     */
+    const normalizeInitialItems = (rawItems) => (Array.isArray(rawItems) ? rawItems : []).map((item) => ({
+        code: normalizeCode(item.code),
+        name: String(item.name || ''),
+        note: String(item.note || ''),
+        manual: item.manual === true,
+    }));
+
+    /**
+     * 初期データのひな型を、保存する形に整える。
+     * @param {Array<Object>} rawPresets JSONから読み込んだひな型
+     * @returns {Array<Object>} 整えたひな型の配列
+     */
+    const normalizeInitialPresets = (rawPresets) => (Array.isArray(rawPresets) ? rawPresets : []).map((preset) => ({
+        id: String(preset.id || ''),
+        category: String(preset.category || 'その他'),
+        name: String(preset.name || ''),
+        itemCodes: (preset.itemCodes || []).map(normalizeCode),
+    }));
+
+    /**
+     * 保存済みのデータに、まだ無いものだけを追加する。
+     * すでにある項目は上書きせず、ユーザーが編集した内容を残す。
+     * @param {Array<Object>} saved 保存済みの配列
+     * @param {Array<Object>} incoming 追加したい配列
+     * @param {string} keyName 重複判定に使うプロパティ名
+     * @returns {Array<Object>} 追加後の配列
+     */
+    const mergeMissing = (saved, incoming, keyName) => {
+        const existingKeys = new Set(saved.map((entry) => entry[keyName]));
+        const added = incoming.filter((entry) => !existingKeys.has(entry[keyName]));
+        return saved.concat(added);
+    };
+
+    /**
+     * 初期データを読み込んで LocalStorage へ反映する。
+     * ・未使用の端末：初期データをそのままコピーする
+     * ・使用中の端末：data/items.json のバージョンが上がっていれば、まだ無いものだけを追加する
+     * ・バージョン管理を始める前のデータ：コード値の割り当てが変わったため、初期データで入れ替える
      * 外部ファイルの取得なのでエラーハンドリングを行う。
      * @returns {Promise<void>}
      */
     const initialize = async () => {
         const hasItems = localStorage.getItem(KEY_ITEMS) !== null;
         const hasPresets = localStorage.getItem(KEY_PRESETS) !== null;
-        if (hasItems && hasPresets) {
-            return;
-        }
+        const savedVersion = Number(read(KEY_VERSION, 0));
 
+        let data = null;
         try {
             const response = await fetch(INITIAL_DATA_URL, { cache: 'no-store' });
             if (!response.ok) {
                 throw new Error(`初期データの取得に失敗しました (${response.status})`);
             }
-            const data = await response.json();
-
-            if (!hasItems) {
-                const items = Array.isArray(data.items) ? data.items : [];
-                write(KEY_ITEMS, items.map((item) => ({
-                    code: normalizeCode(item.code),
-                    name: String(item.name || ''),
-                    note: String(item.note || ''),
-                    manual: item.manual === true,
-                })));
-            }
-            if (!hasPresets) {
-                const presets = Array.isArray(data.presets) ? data.presets : [];
-                write(KEY_PRESETS, presets.map((preset) => ({
-                    id: String(preset.id || ''),
-                    name: String(preset.name || ''),
-                    itemCodes: (preset.itemCodes || []).map(normalizeCode),
-                })));
-            }
+            data = await response.json();
         } catch (error) {
-            // 初期データが読めなくても空の状態でアプリを使えるようにする
+            // 初期データが読めなくても、保存済みのデータでアプリを使えるようにする
             if (!hasItems) {
                 write(KEY_ITEMS, []);
             }
@@ -89,6 +112,27 @@ const Storage = (() => {
             }
             throw error;
         }
+
+        const version = Number(data.version || 1);
+        const items = normalizeInitialItems(data.items);
+        const presets = normalizeInitialPresets(data.presets);
+
+        // バージョンを持たない古いデータは、コード値の意味が変わっているため入れ替える
+        const isLegacyData = savedVersion === 0;
+
+        if (!hasItems || isLegacyData) {
+            write(KEY_ITEMS, items);
+        } else if (version > savedVersion) {
+            write(KEY_ITEMS, mergeMissing(getItems(), items, 'code'));
+        }
+
+        if (!hasPresets || isLegacyData) {
+            write(KEY_PRESETS, presets);
+        } else if (version > savedVersion) {
+            write(KEY_PRESETS, mergeMissing(getPresets(), presets, 'id'));
+        }
+
+        write(KEY_VERSION, version);
     };
 
     /**

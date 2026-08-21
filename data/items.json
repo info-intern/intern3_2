@@ -1,33 +1,92 @@
 {
+  "version": 2,
   "items": [
-    { "code": "1", "name": "提出書類ファイル", "note": "履歴書・エントリーシート", "manual": false },
-    { "code": "2", "name": "証明写真ケース", "note": "予備の証明写真", "manual": false },
-    { "code": "3", "name": "学生証", "note": "学割・本人確認用", "manual": false },
-    { "code": "4", "name": "印鑑ケース", "note": "交通費精算で使う場合あり", "manual": false },
-    { "code": "5", "name": "筆記用具ケース", "note": "黒ボールペン・シャープペン", "manual": false },
-    { "code": "6", "name": "手帳", "note": "選考日程のメモ", "manual": false },
-    { "code": "7", "name": "腕時計", "note": "試験中はスマホが使えない", "manual": false },
-    { "code": "8", "name": "モバイルバッテリー", "note": "充電ケーブルも一緒に", "manual": false },
-    { "code": "9", "name": "折りたたみ傘", "note": "スーツを濡らさない", "manual": false },
-    { "code": "10", "name": "A4クリアファイル", "note": "配布資料を折らずに持ち帰る", "manual": false },
-    { "code": "11", "name": "名刺入れ", "note": "OB・OG訪問用", "manual": false },
-    { "code": "12", "name": "予備のストッキング", "note": "伝線したとき用", "manual": false }
+    { "code": "1", "name": "財布", "note": "内側やカードケースに貼る", "manual": false },
+    { "code": "2", "name": "スマートフォン", "note": "本体には貼れないので手動でチェック", "manual": true },
+    { "code": "3", "name": "鍵", "note": "キーホルダーに付ける", "manual": false },
+    { "code": "4", "name": "交通系ICカード・定期券", "note": "パスケースに貼る", "manual": false },
+    { "code": "5", "name": "ハンカチ・ティッシュ", "note": "ポーチにまとめる", "manual": false },
+    { "code": "6", "name": "モバイルバッテリー", "note": "充電ケーブルも一緒に", "manual": false },
+    { "code": "7", "name": "折りたたみ傘", "note": "天気が怪しい日に", "manual": false },
+    { "code": "8", "name": "腕時計", "note": "スマホが使えない場面用", "manual": false },
+    { "code": "9", "name": "常備薬・絆創膏", "note": "ポーチにまとめる", "manual": false },
+    { "code": "10", "name": "筆記用具ケース", "note": "ペン・メモ", "manual": false },
+    { "code": "11", "name": "手帳・ノート", "note": "予定や記録用", "manual": false },
+    { "code": "12", "name": "ノートパソコン", "note": "スリーブケースに貼る", "manual": false },
+    { "code": "13", "name": "充電ケーブル・電源アダプター", "note": "ポーチにまとめる", "manual": false },
+    { "code": "14", "name": "名刺入れ", "note": "初対面の予定がある日に", "manual": false },
+    { "code": "15", "name": "社員証・入館証", "note": "入館に必要", "manual": false },
+    { "code": "16", "name": "A4クリアファイル", "note": "書類を折らずに持ち運ぶ", "manual": false },
+    { "code": "17", "name": "提出書類ファイル", "note": "履歴書・申込書など", "manual": false },
+    { "code": "18", "name": "証明写真ケース", "note": "予備の証明写真", "manual": false },
+    { "code": "19", "name": "学生証", "note": "学割・本人確認用", "manual": false },
+    { "code": "20", "name": "印鑑ケース", "note": "手続きや精算で使う場合あり", "manual": false },
+    { "code": "21", "name": "着替えポーチ", "note": "泊まりの予定に", "manual": false },
+    { "code": "22", "name": "洗面用具ポーチ", "note": "歯ブラシ・洗顔", "manual": false },
+    { "code": "23", "name": "タオル", "note": "運動・入浴用", "manual": false },
+    { "code": "24", "name": "水筒", "note": "中身を入れ忘れないように", "manual": false },
+    { "code": "25", "name": "シューズ袋", "note": "履き替えが必要な場面に", "manual": false }
   ],
   "presets": [
     {
+      "id": "preset-shucchou-1paku",
+      "category": "仕事・ビジネス",
+      "name": "出張（1泊）",
+      "itemCodes": ["1", "2", "3", "4", "6", "11", "12", "13", "14", "15", "21", "22"]
+    },
+    {
+      "id": "preset-sotomawari",
+      "category": "仕事・ビジネス",
+      "name": "外回り・商談",
+      "itemCodes": ["1", "2", "3", "4", "10", "11", "14", "15", "16"]
+    },
+    {
+      "id": "preset-jugyou",
+      "category": "学校・学び",
+      "name": "授業・講義",
+      "itemCodes": ["1", "2", "3", "4", "10", "11", "12", "13", "19"]
+    },
+    {
       "id": "preset-setsumeikai",
+      "category": "就職活動",
       "name": "会社説明会",
-      "itemCodes": ["3", "5", "6", "7", "9", "10"]
+      "itemCodes": ["1", "2", "3", "4", "7", "8", "10", "11", "16", "19"]
     },
     {
       "id": "preset-mensetsu",
+      "category": "就職活動",
       "name": "面接（対面）",
-      "itemCodes": ["1", "2", "3", "5", "6", "7", "10"]
+      "itemCodes": ["1", "2", "3", "4", "8", "10", "11", "16", "17", "18", "19"]
     },
     {
       "id": "preset-obhoumon",
+      "category": "就職活動",
       "name": "OB・OG訪問",
-      "itemCodes": ["5", "6", "7", "10", "11"]
+      "itemCodes": ["1", "2", "3", "4", "8", "10", "11", "14", "16"]
+    },
+    {
+      "id": "preset-higaeri",
+      "category": "お出かけ・旅行",
+      "name": "日帰りのお出かけ",
+      "itemCodes": ["1", "2", "3", "4", "5", "6", "7"]
+    },
+    {
+      "id": "preset-ryokou-1paku",
+      "category": "お出かけ・旅行",
+      "name": "1泊の旅行",
+      "itemCodes": ["1", "2", "3", "4", "5", "6", "13", "21", "22", "23"]
+    },
+    {
+      "id": "preset-gym",
+      "category": "スポーツ・習い事",
+      "name": "ジム・スポーツ",
+      "itemCodes": ["1", "2", "3", "4", "5", "23", "24", "25"]
+    },
+    {
+      "id": "preset-naraigoto",
+      "category": "スポーツ・習い事",
+      "name": "子どもの習い事",
+      "itemCodes": ["1", "2", "3", "4", "5", "23", "24"]
     }
   ]
 }

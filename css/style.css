@@ -116,6 +116,19 @@ body {
     color: var(--color-text-sub);
 }
 
+/* ひな型をカテゴリごとに区切る見出し */
+.preset-category {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-sub);
+    margin: 16px 0 6px;
+    padding-left: 2px;
+}
+
+.preset-category:first-child {
+    margin-top: 0;
+}
+
 .spacer-top {
     margin-top: 16px;
 }
