@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>リストを作る | 就活 忘れ物チェック</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="app-header">
+        <a class="back-link" href="index.html">‹ 戻る</a>
+        <h1 id="pageTitle">新しいリストを作る</h1>
+    </header>
+
+    <main class="container has-footer">
+        <div class="field">
+            <label for="listNameInput">リスト名（必須・30文字以内）</label>
+            <input type="text" id="listNameInput" maxlength="30" placeholder="例：4/15 A社 面接">
+            <p class="field-error" id="listNameError" hidden></p>
+        </div>
+
+        <h2 class="section-title">ひな型から選ぶ</h2>
+        <p class="lead">よくある予定の持ち物をまとめて選べます。あとから足し引きできます。</p>
+        <div id="presetArea"></div>
+
+        <h2 class="section-title">持ち物を選ぶ</h2>
+        <p class="field-error" id="itemSelectError" hidden></p>
+        <div id="itemArea"></div>
+    </main>
+
+    <div class="fixed-footer">
+        <div class="inner">
+            <button type="button" class="btn btn-primary btn-block" id="saveButton">保存する</button>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/list.js"></script>
+</body>
+</html>

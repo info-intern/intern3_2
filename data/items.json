@@ -1,0 +1,33 @@
+{
+  "items": [
+    { "code": "1", "name": "提出書類ファイル", "note": "履歴書・エントリーシート", "manual": false },
+    { "code": "2", "name": "証明写真ケース", "note": "予備の証明写真", "manual": false },
+    { "code": "3", "name": "学生証", "note": "学割・本人確認用", "manual": false },
+    { "code": "4", "name": "印鑑ケース", "note": "交通費精算で使う場合あり", "manual": false },
+    { "code": "5", "name": "筆記用具ケース", "note": "黒ボールペン・シャープペン", "manual": false },
+    { "code": "6", "name": "手帳", "note": "選考日程のメモ", "manual": false },
+    { "code": "7", "name": "腕時計", "note": "試験中はスマホが使えない", "manual": false },
+    { "code": "8", "name": "モバイルバッテリー", "note": "充電ケーブルも一緒に", "manual": false },
+    { "code": "9", "name": "折りたたみ傘", "note": "スーツを濡らさない", "manual": false },
+    { "code": "10", "name": "A4クリアファイル", "note": "配布資料を折らずに持ち帰る", "manual": false },
+    { "code": "11", "name": "名刺入れ", "note": "OB・OG訪問用", "manual": false },
+    { "code": "12", "name": "予備のストッキング", "note": "伝線したとき用", "manual": false }
+  ],
+  "presets": [
+    {
+      "id": "preset-setsumeikai",
+      "name": "会社説明会",
+      "itemCodes": ["3", "5", "6", "7", "9", "10"]
+    },
+    {
+      "id": "preset-mensetsu",
+      "name": "面接（対面）",
+      "itemCodes": ["1", "2", "3", "5", "6", "7", "10"]
+    },
+    {
+      "id": "preset-obhoumon",
+      "name": "OB・OG訪問",
+      "itemCodes": ["5", "6", "7", "10", "11"]
+    }
+  ]
+}

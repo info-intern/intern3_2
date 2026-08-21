@@ -2,11 +2,43 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>intern3_2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>就活 忘れ物チェック</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Hello World - intern3_2</h1>
-    <h2>インターンシップに参加しています！</h2>
+    <header class="app-header">
+        <h1>就活 忘れ物チェック</h1>
+    </header>
+
+    <main class="container has-footer">
+        <p class="lead">出発前にリストを選んで、カバンの中身を読み取ってください。</p>
+
+        <h2 class="section-title">保存済みのリスト</h2>
+        <div id="listArea"></div>
+
+        <h2 class="section-title">設定</h2>
+        <ul class="card-list">
+            <li>
+                <a class="row" href="items.html">
+                    <span class="row-body">
+                        <span class="row-title">持ち物を管理する</span>
+                        <span class="row-note" id="itemCountText"></span>
+                    </span>
+                    <span class="row-arrow" aria-hidden="true">›</span>
+                </a>
+            </li>
+        </ul>
+    </main>
+
+    <div class="fixed-footer">
+        <div class="inner">
+            <a class="btn btn-primary btn-block" href="list.html">＋ 新しいリストを作る</a>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>

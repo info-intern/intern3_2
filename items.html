@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>持ち物を管理する | 就活 忘れ物チェック</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="app-header">
+        <a class="back-link" href="index.html">‹ 戻る</a>
+        <h1>持ち物を管理する</h1>
+    </header>
+
+    <main class="container has-footer">
+        <p class="lead">持ち物に貼ったカメレオンコードと、持ち物の名前を紐づけて登録します。</p>
+
+        <h2 class="section-title" id="formTitle">持ち物を追加する</h2>
+
+        <div class="field">
+            <label for="nameInput">持ち物の名前（必須・30文字以内）</label>
+            <input type="text" id="nameInput" maxlength="30" placeholder="例：提出書類ファイル">
+            <p class="field-error" id="nameError" hidden></p>
+        </div>
+
+        <div class="field">
+            <label class="checkbox-field" for="manualInput">
+                <input type="checkbox" id="manualInput">
+                コードを貼れない物（手動でチェックする）
+            </label>
+            <p class="field-hint">財布やスマホ本体など、シールを貼れない物に使います。</p>
+        </div>
+
+        <div class="field" id="codeField">
+            <label for="codeInput">カメレオンコードの値（必須・半角数字6桁以内）</label>
+            <div class="field-inline">
+                <input type="text" id="codeInput" inputmode="numeric" maxlength="6" placeholder="例：1">
+                <button type="button" class="btn btn-secondary" id="scanCodeButton">読み取る</button>
+            </div>
+            <p class="field-error" id="codeError" hidden></p>
+        </div>
+
+        <div class="field">
+            <label for="noteInput">メモ（任意・50文字以内）</label>
+            <input type="text" id="noteInput" maxlength="50" placeholder="例：履歴書・エントリーシート">
+        </div>
+
+        <h2 class="section-title">登録済みの持ち物</h2>
+        <div id="itemArea"></div>
+    </main>
+
+    <div class="fixed-footer">
+        <div class="inner">
+            <button type="button" class="btn btn-secondary" id="cancelButton" hidden>キャンセル</button>
+            <button type="button" class="btn btn-primary" id="saveButton">この持ち物を登録する</button>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/reader.js"></script>
+    <script src="js/items.js"></script>
+</body>
+</html>

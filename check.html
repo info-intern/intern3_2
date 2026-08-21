@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>忘れ物チェック | 就活 忘れ物チェック</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="app-header">
+        <a class="back-link" href="index.html">‹ 戻る</a>
+        <h1 id="pageTitle">忘れ物チェック</h1>
+    </header>
+
+    <main class="container has-footer">
+        <p class="lead" id="guideText">カバンの中身を机に広げ、全体が写るように構えて読み取ってください。</p>
+
+        <div class="notice" id="pcNotice" hidden>
+            <p>この画面は IroatoReader アプリの中ではないため、カメラでの読み取りができません。下の一覧から「持ってきた物」を選ぶと、照合の動きを確認できます。</p>
+        </div>
+
+        <div id="resultArea"></div>
+
+        <div id="manualArea" hidden>
+            <h2 class="section-title">手動でチェックする物</h2>
+            <p class="lead">コードを貼れない持ち物です。入れたらチェックを付けてください。</p>
+            <div id="manualList"></div>
+        </div>
+
+        <div id="simulationArea" hidden>
+            <h2 class="section-title">PC確認用：持ってきた物を選ぶ</h2>
+            <div id="simulationList"></div>
+            <button type="button" class="btn btn-secondary btn-block spacer-top" id="simulationButton">この内容で照合する</button>
+        </div>
+    </main>
+
+    <div class="fixed-footer">
+        <div class="inner">
+            <button type="button" class="btn btn-secondary" id="resetButton" hidden>やり直す</button>
+            <button type="button" class="btn btn-primary" id="scanButton">カバンの中身を読み取る</button>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/reader.js"></script>
+    <script src="js/check.js"></script>
+</body>
+</html>
