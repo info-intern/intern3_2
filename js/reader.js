@@ -11,6 +11,20 @@ const Reader = (() => {
     const isAvailable = () => typeof IroatoReader !== 'undefined';
 
     /**
+     * 読み取り画面でコードを認識したときに、コード値ではなく持ち物名を表示するための対応表を作る。
+     * @returns {Object} コード値をキー、持ち物名を値とするオブジェクト
+     */
+    const buildDisplayData = () => {
+        const displayData = {};
+        Storage.getItems().forEach((item) => {
+            if (item.manual !== true && item.code !== '') {
+                displayData[item.code] = item.name;
+            }
+        });
+        return displayData;
+    };
+
+    /**
      * カバンの中身をまとめて読み取る（複数読み取り）。
      * searchCodes は指定しない。リスト外のコードも受け取り、照合は JavaScript 側で行う。
      * @param {Function} onResult 読み取ったコード値の配列を受け取る関数
@@ -21,6 +35,7 @@ const Reader = (() => {
             mode: IroatoReader.multi,
             resolution: IroatoReader.r1920x1080,
             analyzeLevel: 5,
+            displayData: buildDisplayData(),
             labelText: 'カバンの中身が全体が写るように構えてください',
             buttonText: '読み取り完了',
         });
@@ -46,6 +61,8 @@ const Reader = (() => {
             mode: IroatoReader.single,
             resolution: IroatoReader.r1920x1080,
             analyzeLevel: 5,
+            // 登録済みのコードを読んだ場合は、その持ち物名を表示して重複に気づけるようにする
+            displayData: buildDisplayData(),
             labelText: '登録したい持ち物のコードを読み取ってください',
             buttonText: '読み取り完了',
         });

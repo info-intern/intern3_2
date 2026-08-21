@@ -88,6 +88,16 @@ body {
     padding: 8px 4px;
 }
 
+/* ヘッダーは固定表示なので、ホームボタンは常に画面上に残る */
+.home-link {
+    position: absolute;
+    right: 12px;
+    color: var(--color-accent);
+    text-decoration: none;
+    font-size: 15px;
+    padding: 8px 4px;
+}
+
 /* ===== レイアウト ===== */
 
 .container {

@@ -168,11 +168,26 @@
     };
 
     /**
+     * カメラでの読み取りが不要なリストかどうかを判定する。
+     * @returns {boolean} 手動チェックの持ち物だけで構成されていれば true
+     */
+    const isManualOnlyList = () => getScannableItems().length === 0 && getManualItems().length > 0;
+
+    /**
+     * 手動チェックの持ち物がすべてチェック済みかどうかを判定する。
+     * @returns {boolean} すべてチェックされていれば true
+     */
+    const isManualAllChecked = () => getManualItems().every((item) => manualCheckedCodes.has(item.code));
+
+    /**
      * 照合結果を描画し、履歴に記録する。
      */
     const renderResult = () => {
         UI.clear(resultArea);
-        if (!hasScanned) {
+
+        // 読み取る物が無いリストは、手動チェックが全部付いた時点で結果を出す
+        const manualOnlyComplete = isManualOnlyList() && isManualAllChecked();
+        if (!hasScanned && !manualOnlyComplete) {
             return;
         }
 
@@ -190,11 +205,14 @@
             resultArea.appendChild(createExtraBlock(extra));
         }
 
-        guideText.textContent = missing.length > 0
-            ? '足りない物をカバンに入れて、もう一度読み取ってください。'
-            : 'チェックが完了しました。';
-
-        scanButton.textContent = 'もう一度読み取る';
+        if (isManualOnlyList()) {
+            guideText.textContent = 'チェックが完了しました。';
+        } else {
+            guideText.textContent = missing.length > 0
+                ? '足りない物をカバンに入れて、もう一度読み取ってください。'
+                : 'チェックが完了しました。';
+            scanButton.textContent = 'もう一度読み取る';
+        }
         resetButton.hidden = false;
 
         Storage.saveCheckResult(sessionId, {
@@ -321,6 +339,14 @@
     };
 
     /**
+     * チェックを始める前の案内文を返す。
+     * @returns {string} 表示する文言
+     */
+    const getInitialGuideText = () => (isManualOnlyList()
+        ? 'カメラでの読み取りは不要です。入れた物にチェックを付けてください。'
+        : 'カバンの中身を机に広げ、全体が写るように構えて読み取ってください。');
+
+    /**
      * 読み取り結果を消して、最初の状態に戻す。
      */
     const reset = () => {
@@ -330,12 +356,16 @@
         hasScanned = false;
 
         UI.clear(resultArea);
-        guideText.textContent = 'カバンの中身を机に広げ、全体が写るように構えて読み取ってください。';
-        scanButton.textContent = 'カバンの中身を読み取る';
-        resetButton.hidden = true;
+        guideText.textContent = getInitialGuideText();
+
+        if (!isManualOnlyList()) {
+            scanButton.textContent = 'カバンの中身を読み取る';
+        }
+        // 読み取る物が無いリストでは、やり直すボタンを常に出しておく
+        resetButton.hidden = !isManualOnlyList();
 
         renderManualItems();
-        if (!Reader.isAvailable()) {
+        if (!Reader.isAvailable() && !isManualOnlyList()) {
             renderSimulation();
         }
     };
@@ -369,9 +399,14 @@
         document.title = `${targetList.name} | 忘れ物チェッカー`;
 
         renderManualItems();
+        guideText.textContent = getInitialGuideText();
 
-        // IroatoReader アプリの外ではカメラが使えないため、代替UIに切り替える
-        if (!Reader.isAvailable()) {
+        if (isManualOnlyList()) {
+            // 読み取る物が無いので、カメラのボタンは出さない
+            scanButton.hidden = true;
+            resetButton.hidden = false;
+        } else if (!Reader.isAvailable()) {
+            // IroatoReader アプリの外ではカメラが使えないため、代替UIに切り替える
             pcNotice.hidden = false;
             scanButton.disabled = true;
             renderSimulation();
