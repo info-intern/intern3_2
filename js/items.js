@@ -163,7 +163,7 @@
         const body = UI.createElement('span', 'row-body');
         body.appendChild(UI.createElement('span', 'row-title', item.name));
         if (item.note) {
-            body.appendChild(UI.createElement('span', 'row-note', item.note));
+            body.appendChild(UI.createElement('span', 'row-note row-note-below', item.note));
         }
         row.appendChild(body);
 

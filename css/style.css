@@ -293,6 +293,11 @@ body {
     word-break: break-word;
 }
 
+/* 名前との間に1行ぶんの余白を空け、説明を独立して読めるようにする */
+.row-note-below {
+    margin-top: 1.6em;
+}
+
 .row-arrow {
     color: var(--color-text-sub);
     font-size: 18px;
