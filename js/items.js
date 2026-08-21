@@ -64,25 +64,26 @@
         const note = noteInput.value.trim();
         const isManual = manualInput.checked;
         const code = Storage.normalizeCode(codeInput.value);
-        let hasError = false;
+        // 最初にエラーになった箇所。保存後にそこまでスクロールして気づけるようにする
+        let firstErrorTarget = null;
 
         // 必須チェック・桁数チェック
         if (name === '') {
             setError(nameError, '持ち物の名前を入力してください。');
-            hasError = true;
+            firstErrorTarget = nameInput;
         } else if (name.length > 30) {
             setError(nameError, '持ち物の名前は30文字以内で入力してください。');
-            hasError = true;
+            firstErrorTarget = nameInput;
         }
 
         if (!isManual) {
             if (code === '') {
                 setError(codeError, 'カメレオンコードの値を入力するか、読み取ってください。');
-                hasError = true;
+                firstErrorTarget = firstErrorTarget || codeInput;
             } else if (!/^[0-9]{1,6}$/.test(code)) {
                 // 型チェック：カメレオンコードの値は半角数字
                 setError(codeError, 'コードの値は半角数字6桁以内で入力してください。');
-                hasError = true;
+                firstErrorTarget = firstErrorTarget || codeInput;
             } else {
                 // 重複チェック：他の持ち物が同じコード値を使っていないか
                 const duplicated = Storage.getItems().some(
@@ -90,12 +91,13 @@
                 );
                 if (duplicated) {
                     setError(codeError, 'このコードは別の持ち物で使われています。');
-                    hasError = true;
+                    firstErrorTarget = firstErrorTarget || codeInput;
                 }
             }
         }
 
-        if (hasError) {
+        if (firstErrorTarget) {
+            UI.focusError(firstErrorTarget);
             return null;
         }
 
@@ -156,18 +158,21 @@
     const createItemRow = (item) => {
         const listItem = document.createElement('li');
 
+        // 「名前 → 説明」を左に縦に並べ、コード値は行の右端に置く
         const row = UI.createElement('div', 'row row-static');
         const body = UI.createElement('span', 'row-body');
         body.appendChild(UI.createElement('span', 'row-title', item.name));
-
-        const note = UI.createElement('span', 'row-note');
-        const codeLabel = UI.createElement('span', 'code-value', item.manual ? '手動チェック' : `コード ${item.code}`);
-        note.appendChild(codeLabel);
         if (item.note) {
-            note.appendChild(document.createTextNode(`　${item.note}`));
+            body.appendChild(UI.createElement('span', 'row-note', item.note));
         }
-        body.appendChild(note);
         row.appendChild(body);
+
+        const codeLabel = UI.createElement(
+            'span',
+            'row-code code-value',
+            item.manual ? '手動チェック' : `コード ${item.code}`
+        );
+        row.appendChild(codeLabel);
         listItem.appendChild(row);
 
         const actions = UI.createElement('div', 'row-actions');

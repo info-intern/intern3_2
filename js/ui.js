@@ -123,6 +123,27 @@ const UI = (() => {
     };
 
     /**
+     * 入力エラーの箇所まで画面をスクロールし、分かるようにトーストも出す。
+     * 保存ボタンが画面下部に固定されているため、上のほうでエラーが出ても気づけないのを防ぐ。
+     * @param {HTMLElement} target 最初にエラーになった要素
+     * @param {string} message トーストに表示する文言
+     */
+    const focusError = (target, message = '入力内容を確認してください') => {
+        showToast(message);
+        if (!target) {
+            return;
+        }
+
+        // ヘッダーに隠れないよう、画面の中央に来るようスクロールする
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // 入力欄の場合はカーソルも移す（スクロールは上で済ませているので邪魔しない）
+        if (target.tagName === 'INPUT') {
+            target.focus({ preventScroll: true });
+        }
+    };
+
+    /**
      * URL のクエリパラメータを取得する。
      * @param {string} name パラメータ名
      * @returns {string} 値。無ければ空文字
@@ -148,6 +169,7 @@ const UI = (() => {
 
     return {
         showToast,
+        focusError,
         confirmDialog,
         createElement,
         createEmptyMessage,

@@ -121,18 +121,22 @@
                 setError(itemSelectError, '');
             });
 
+            // 持ち物管理画面と同じ並びにする（名前 → 説明、コード値は右端）
             const body = UI.createElement('span', 'row-body');
             body.appendChild(UI.createElement('span', 'row-title', item.name));
-
-            const note = UI.createElement('span', 'row-note');
-            note.appendChild(UI.createElement('span', 'code-value', item.manual ? '手動チェック' : `コード ${item.code}`));
             if (item.note) {
-                note.appendChild(document.createTextNode(`　${item.note}`));
+                body.appendChild(UI.createElement('span', 'row-note', item.note));
             }
-            body.appendChild(note);
+
+            const codeLabel = UI.createElement(
+                'span',
+                'row-code code-value',
+                item.manual ? '手動チェック' : `コード ${item.code}`
+            );
 
             label.appendChild(checkbox);
             label.appendChild(body);
+            label.appendChild(codeLabel);
             listItem.appendChild(label);
             container.appendChild(listItem);
         });
@@ -147,23 +151,25 @@
         setError(itemSelectError, '');
 
         const name = listNameInput.value.trim();
-        let hasError = false;
+        // 最初にエラーになった箇所。保存後にそこまでスクロールして気づけるようにする
+        let firstErrorTarget = null;
 
         // 必須チェック・桁数チェック
         if (name === '') {
             setError(listNameError, 'リスト名を入力してください。');
-            hasError = true;
+            firstErrorTarget = listNameInput;
         } else if (name.length > 30) {
             setError(listNameError, 'リスト名は30文字以内で入力してください。');
-            hasError = true;
+            firstErrorTarget = listNameInput;
         }
 
         if (selectedCodes.size === 0) {
             setError(itemSelectError, '持ち物を1つ以上選んでください。');
-            hasError = true;
+            firstErrorTarget = firstErrorTarget || itemSelectError;
         }
 
-        if (hasError) {
+        if (firstErrorTarget) {
+            UI.focusError(firstErrorTarget);
             return;
         }
 
