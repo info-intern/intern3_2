@@ -88,16 +88,6 @@ body {
     padding: 8px 4px;
 }
 
-/* ヘッダーは固定表示なので、ホームボタンは常に画面上に残る */
-.home-link {
-    position: absolute;
-    right: 12px;
-    color: var(--color-accent);
-    text-decoration: none;
-    font-size: 15px;
-    padding: 8px 4px;
-}
-
 /* ===== レイアウト ===== */
 
 .container {
@@ -494,40 +484,24 @@ body {
     color: var(--color-success);
 }
 
-/* 揃っている物：既定で折りたたむ */
+/* 揃っている物：何が揃ったかすぐ分かるよう、そのまま一覧で見せる */
 .result-ok {
     background-color: var(--color-bg);
     border: 1px solid var(--color-border);
+    padding: 14px 16px;
 }
 
-.result-ok summary {
-    padding: 14px 16px;
+.result-ok .result-heading {
     font-size: 15px;
     font-weight: 600;
     color: var(--color-success);
-    cursor: pointer;
-    list-style: none;
-}
-
-.result-ok summary::-webkit-details-marker {
-    display: none;
-}
-
-.result-ok summary::after {
-    content: "▼";
-    float: right;
-    font-size: 11px;
-    color: var(--color-text-sub);
-}
-
-.result-ok[open] summary::after {
-    content: "▲";
+    margin: 0 0 6px;
 }
 
 .result-ok ul {
     list-style: none;
     margin: 0;
-    padding: 0 16px 12px;
+    padding: 0;
 }
 
 .result-ok li {
@@ -535,30 +509,46 @@ body {
     font-size: 15px;
 }
 
-/* リスト外の物：問題ではないので、警告色を使わず控えめに知らせるだけ */
+/* リスト外の物：問題ではなく参考情報なので、警告色を使わず折りたたんでおく */
 .result-extra {
     background-color: var(--color-bg);
     border: 1px solid var(--color-border);
-    padding: 12px 16px;
 }
 
-.result-extra .result-heading {
+.result-extra summary {
+    padding: 14px 16px;
     font-size: 15px;
     font-weight: 600;
     color: var(--color-text-sub);
-    margin: 0 0 2px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.result-extra summary::-webkit-details-marker {
+    display: none;
+}
+
+.result-extra summary::after {
+    content: "▼";
+    float: right;
+    font-size: 11px;
+    color: var(--color-text-sub);
+}
+
+.result-extra[open] summary::after {
+    content: "▲";
 }
 
 .result-extra .result-caption {
     font-size: 13px;
     color: var(--color-text-sub);
-    margin: 0 0 6px;
+    margin: 0 16px 6px;
 }
 
 .result-extra ul {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 16px 12px;
 }
 
 .result-extra li {

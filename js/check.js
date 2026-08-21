@@ -124,17 +124,13 @@
     };
 
     /**
-     * 「揃っている物」のブロックを作る。既定では折りたたんでおく。
+     * 「揃っている物」のブロックを作る。何が揃ったかすぐ分かるよう、そのまま一覧で表示する。
      * @param {Array<Object>} found 揃っている持ち物
      * @returns {HTMLElement} 生成した要素
      */
     const createFoundBlock = (found) => {
-        const block = document.createElement('details');
-        block.className = 'result-block result-ok';
-
-        const summary = document.createElement('summary');
-        summary.textContent = `${found.length}個 揃っています`;
-        block.appendChild(summary);
+        const block = UI.createElement('section', 'result-block result-ok');
+        block.appendChild(UI.createElement('h2', 'result-heading', `${found.length}個 揃っています`));
 
         const list = document.createElement('ul');
         found.forEach((item) => list.appendChild(createResultItem(item, false)));
@@ -145,13 +141,18 @@
 
     /**
      * 「リスト外の物」のブロックを作る。
-     * リストに無い物が入っていても問題ではないため、参考情報として控えめに知らせる。
+     * 問題ではなく参考情報なので、既定では折りたたんでおく。
      * @param {Array<Object>} extra リストに無い持ち物
      * @returns {HTMLElement} 生成した要素
      */
     const createExtraBlock = (extra) => {
-        const block = UI.createElement('section', 'result-block result-extra');
-        block.appendChild(UI.createElement('h2', 'result-heading', `リストにない物も${extra.length}個入っています`));
+        const block = document.createElement('details');
+        block.className = 'result-block result-extra';
+
+        const summary = document.createElement('summary');
+        summary.textContent = `リストにない物も${extra.length}個入っています`;
+        block.appendChild(summary);
+
         block.appendChild(UI.createElement('p', 'result-caption', '持っていく分には問題ありません。念のため確認してください。'));
 
         const list = document.createElement('ul');
